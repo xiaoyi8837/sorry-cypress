@@ -36,6 +36,17 @@ query getInstance($instanceId: ID!) {
         error
         stack
         title
+        attempts {
+          state
+          error {
+            name
+            message
+            stack
+          }
+          wallClockStartedAt
+          wallClockDuration
+        }
+        duration
       }
       screenshots {
         testId
@@ -43,6 +54,7 @@ query getInstance($instanceId: ID!) {
         height
         width
         screenshotURL
+        testAttemptIndex
       }
       cypressConfig {
         video

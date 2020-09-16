@@ -45,15 +45,15 @@ export const InstanceDetails: React.FC<{ instance: Instance }> = ({
               header: 'Duration',
               sortable: false,
               render: (test: InstanceTest) => {
-                if (test?.wallClockDuration) {
+                if (test?.duration) {
                   return (
-                    <Tooltip text={`Started at ${test.wallClockStartedAt}`}>
+                    // <Tooltip text={`Started at ${test.wallClockStartedAt}`}>
                       <Text>
                         {shortEnglishHumanizerWithMsIfNeeded(
-                          test.wallClockDuration
+                          test.duration
                         )}
                       </Text>
-                    </Tooltip>
+                    // {/* </Tooltip> */}
                   );
                 } else {
                   return '';

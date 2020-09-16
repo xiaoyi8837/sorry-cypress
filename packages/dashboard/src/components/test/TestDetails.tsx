@@ -11,53 +11,78 @@ export function TestDetails({
   test,
   screenshots,
 }: TestDetailsProps): React.ReactNode {
-  const screenshot = screenshots.find((s) => s.testId === test.testId);
+  const screenshot = screenshots.filter((s) => s.testId === test.testId);
   const { css } = useCss();
   const title = test.title.join(' > ');
+
   return (
     <>
       <HFlow>
         <TestState state={test.state} />
         <Heading level={1}>{title}</Heading>
       </HFlow>
-      {test.wallClockDuration && (
-        <ul>
-          <li>
-            <span>Wall clock duration:</span> {test.wallClockDuration} msec
-          </li>
-        </ul>
-      )}
-      {test.error && (
-        <Alert
-          type="danger"
-          style={{
-            whiteSpace: 'pre',
-            padding: 12,
-          }}
-        >
-          <strong>{test.error}</strong>
-          {test.stack && <div>{test.stack}</div>}
-        </Alert>
-      )}
-
-      {screenshot && (
-        <Paper>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={screenshot.screenshotURL}
-          >
-            <img
-              className={css`
-                 {
-                  max-width: 100%;
-                }
-              `}
-              src={screenshot.screenshotURL}
-            />
-          </a>
-        </Paper>
-      )}
+      {
+        test.attempts.map((attempt,index)=>{
+          return (
+            <>
+              <ul>
+                <li>
+                  <span>序号:</span> {index}
+                  <br></br>
+                  <span>耗时:</span> {attempt.wallClockDuration} 毫秒
+                </li>
+              </ul>
+              {attempt.error && (
+                <>
+                <Alert
+                    type="danger"
+                    style={{
+                    whiteSpace: 'pre-wrap',
+                    padding: 12
+                  }}
+                >
+                <strong>{attempt.error.message}</strong>
+                </Alert>
+                <Alert
+                    type="danger"
+                    style={{
+                    whiteSpace: 'pre-wrap',
+                    padding: 12,
+                  }}
+                >
+                {attempt.error.stack && <div>{attempt.error.stack}</div>}
+                </Alert>
+                </>
+              )}
+              {screenshot.length !=0 && screenshot.map(s => {
+                      if (s.testAttemptIndex === index){
+                        return (
+                          <>
+                            <Paper>
+                                  <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href={s.screenshotURL}
+                                  >
+                                    <img
+                                      className={css`
+                                        {
+                                          max-width: 100%;
+                                        }
+                                      `}
+                                      src={s.screenshotURL}
+                                    />
+                                  </a>
+                                </Paper>
+                          </>
+                        )
+                      }
+                    })
+              }
+            </>
+          )
+        })
+      }
     </>
   );
 }

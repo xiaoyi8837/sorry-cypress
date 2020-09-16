@@ -83,12 +83,27 @@ type InstanceTest {
   title: [String]
   state: String # prob enum
   body: String
-  stack: String
-  error: String
+  stack: String # cypress update to 5.0
+  error: String # cypress update to 5.0
   # timings: InstanceTestTimings
+  wallClockStartedAt: String # cypress update to 5.0
+  wallClockDuration: Int # cypress update to 5.0
+  attempts: [TestAttempt]
+  duration: Int # cypress update to 5.0
+}
+
+type TestAttempt {
+  state: String # prob enum
+  error: TestAttemptError
   wallClockStartedAt: String
   wallClockDuration: Int
 }
+
+type TestAttemptError {
+  name: String
+  message: String
+  stack: String
+} 
 
 type InstanceScreeshot {
   screenshotId: String!
@@ -98,6 +113,7 @@ type InstanceScreeshot {
   height: Int!
   width: Int!
   screenshotURL: String
+  testAttemptIndex: Int
 }
 
 type ReporterStats {
