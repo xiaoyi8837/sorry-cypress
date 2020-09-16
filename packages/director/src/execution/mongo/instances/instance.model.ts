@@ -1,3 +1,4 @@
+import { computingTestDuration } from './../../../lib/results';
 import { InstanceResult } from '@src/types';
 import { getMongoDB } from '@src/lib/mongo';
 import {
@@ -45,6 +46,10 @@ export const setInstanceResults = async (
   instanceId: string,
   results: InstanceResult
 ) => {
+  /**
+   * 计算一下测试的耗时
+   */
+  computingTestDuration(results)
   const { matchedCount, modifiedCount } = await getMongoDB()
     .collection(COLLECTION_NAME)
     .updateOne(
